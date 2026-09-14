@@ -1,5 +1,5 @@
 /**
- * CINEMAX Streaming Platform
+ * CINEVERSE Streaming Platform
  * Interactive Movie Hub, Search, Carousel Scroll, My List & Modal Management
  */
 
@@ -268,7 +268,7 @@ const MOVIES_DATABASE = [
 ];
 
 // --- Application State ---
-let userMyList = JSON.parse(localStorage.getItem('cinemax_mylist')) || ['interstellar', 'dark-knight', 'inception'];
+let userMyList = JSON.parse(localStorage.getItem('cineverse_mylist') || localStorage.getItem('cinemax_mylist')) || ['interstellar', 'dark-knight', 'inception'];
 
 // --- DOM References ---
 const navbar = document.getElementById('navbar');
@@ -434,7 +434,7 @@ function toggleMyList(movieId) {
     showToast(`Added "${movie.title}" to My List`);
   }
 
-  localStorage.setItem('cinemax_mylist', JSON.stringify(userMyList));
+  localStorage.setItem('cineverse_mylist', JSON.stringify(userMyList));
   renderMovies();
 }
 
