@@ -1,16 +1,17 @@
 /* ==========================================================================
    CINEVERSE - Streaming Platform Stylesheet
-   Modern Dark Theme, Glassmorphism, Micro-Animations & Responsive Design
+   Pure CSS3 - Flexbox, Grids, Transforms, Transitions & Media Queries
+   (100% Pure HTML & CSS - Zero JavaScript)
    ========================================================================== */
 
-/* --- Custom Properties & Theme Variables --- */
+/* --- Custom Properties & Palette --- */
 :root {
   --bg-darkest: #0a0b10;
   --bg-surface: #12131c;
   --bg-card: #181a26;
   --bg-card-hover: #212435;
   --border-subtle: rgba(255, 255, 255, 0.08);
-  --border-highlight: rgba(229, 9, 20, 0.4);
+  --border-highlight: rgba(229, 9, 20, 0.5);
 
   --primary-red: #e50914;
   --primary-red-hover: #f40612;
@@ -33,8 +34,7 @@
   --radius-lg: 16px;
   --radius-full: 9999px;
 
-  --transition-smooth: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-  --transition-bounce: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  --transition-smooth: all 0.3s ease;
 }
 
 /* --- Universal Reset --- */
@@ -76,9 +76,11 @@ body {
   background: #3f3f5a;
 }
 
-/* --- Navigation Bar --- */
+/* =========================================================================
+   1. Navigation Bar (Flexbox)
+   ========================================================================= */
 .navbar {
-  position: fixed;
+  position: sticky;
   top: 0;
   left: 0;
   width: 100%;
@@ -87,15 +89,9 @@ body {
   align-items: center;
   justify-content: space-between;
   padding: 16px 4%;
-  transition: background-color 0.4s ease, backdrop-filter 0.4s ease, padding 0.3s ease, box-shadow 0.3s ease;
-  background: linear-gradient(180deg, rgba(10, 11, 16, 0.85) 0%, rgba(10, 11, 16, 0) 100%);
-}
-
-.navbar.scrolled {
   background-color: rgba(10, 11, 16, 0.95);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  padding: 12px 4%;
   border-bottom: 1px solid var(--border-subtle);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
 }
@@ -173,86 +169,66 @@ body {
   gap: 18px;
 }
 
-/* Search Box */
-.search-wrapper {
-  position: relative;
+/* Visual Search Box (Pure CSS Focus-Within) */
+.search-box {
   display: flex;
   align-items: center;
-}
-
-.search-input {
   background: rgba(255, 255, 255, 0.08);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-full);
-  padding: 8px 16px 8px 38px;
-  font-size: 0.875rem;
-  color: var(--text-primary);
-  width: 190px;
-  outline: none;
+  padding: 6px 14px;
   transition: var(--transition-smooth);
-  font-family: var(--font-body);
 }
 
-.search-input:focus {
-  width: 270px;
+.search-box:focus-within {
   background: rgba(18, 19, 28, 0.95);
   border-color: var(--primary-red);
   box-shadow: 0 0 12px var(--accent-glow);
 }
 
-.search-icon {
-  position: absolute;
-  left: 12px;
-  color: var(--text-muted);
-  width: 16px;
-  height: 16px;
-  pointer-events: none;
-  transition: color 0.2s ease;
-}
-
-.search-input:focus ~ .search-icon {
-  color: var(--primary-red);
-}
-
-.clear-search-btn {
-  position: absolute;
-  right: 12px;
+.search-box input {
   background: none;
   border: none;
-  color: var(--text-muted);
-  cursor: pointer;
-  display: none;
-  font-size: 1rem;
+  outline: none;
+  color: var(--text-primary);
+  font-size: 0.875rem;
+  font-family: var(--font-body);
+  width: 160px;
+  transition: width 0.3s ease;
 }
 
-.clear-search-btn.show {
-  display: block;
+.search-box input:focus {
+  width: 220px;
 }
 
-/* Nav Action Icons & Dropdowns */
-.nav-btn-icon {
+.search-btn {
   background: none;
   border: none;
-  color: var(--text-secondary);
   cursor: pointer;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin-left: 6px;
+}
+
+/* Notification Icon */
+.nav-icon-wrapper {
   position: relative;
+  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   width: 36px;
   height: 36px;
   border-radius: var(--radius-full);
-  transition: var(--transition-smooth);
+  transition: background 0.2s ease;
 }
 
-.nav-btn-icon:hover {
-  color: var(--text-primary);
+.nav-icon-wrapper:hover {
   background: rgba(255, 255, 255, 0.08);
 }
 
-.nav-btn-icon svg {
-  width: 20px;
-  height: 20px;
+.nav-icon {
+  font-size: 1.15rem;
 }
 
 .badge-count {
@@ -271,24 +247,23 @@ body {
   justify-content: center;
 }
 
-/* Profile Dropdown Container */
+/* Profile Dropdown (Pure CSS :hover Trigger) */
 .profile-wrapper {
   position: relative;
 }
 
 .profile-avatar-btn {
-  background: none;
-  border: 2px solid transparent;
-  padding: 0;
-  cursor: pointer;
-  border-radius: var(--radius-sm);
   display: flex;
   align-items: center;
   gap: 6px;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: var(--radius-sm);
+  border: 2px solid transparent;
   transition: border-color 0.2s ease;
 }
 
-.profile-avatar-btn:hover {
+.profile-wrapper:hover .profile-avatar-btn {
   border-color: var(--primary-red);
 }
 
@@ -305,33 +280,32 @@ body {
   color: #ffffff;
 }
 
+.dropdown-caret {
+  font-size: 0.65rem;
+  color: var(--text-secondary);
+}
+
 .dropdown-menu {
   position: absolute;
-  top: calc(100% + 10px);
+  top: calc(100% + 8px);
   right: 0;
-  width: 220px;
+  width: 210px;
   background: var(--bg-surface);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-md);
   padding: 10px 0;
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(16px);
   display: none;
   z-index: 1001;
-  animation: dropdownFade 0.2s ease forwards;
 }
 
-.dropdown-menu.active {
+/* Pure CSS display on hover */
+.profile-wrapper:hover .dropdown-menu {
   display: block;
 }
 
-@keyframes dropdownFade {
-  from { opacity: 0; transform: translateY(-8px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
 .dropdown-header {
-  padding: 10px 18px 12px;
+  padding: 8px 16px 12px;
   border-bottom: 1px solid var(--border-subtle);
   margin-bottom: 6px;
 }
@@ -348,10 +322,8 @@ body {
 }
 
 .dropdown-menu a {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 10px 18px;
+  display: block;
+  padding: 10px 16px;
   color: var(--text-secondary);
   text-decoration: none;
   font-size: 0.875rem;
@@ -360,8 +332,8 @@ body {
 
 .dropdown-menu a:hover {
   color: var(--text-primary);
-  background: rgba(255, 255, 255, 0.05);
-  padding-left: 22px;
+  background: rgba(255, 255, 255, 0.06);
+  padding-left: 20px;
 }
 
 .dropdown-divider {
@@ -370,13 +342,19 @@ body {
   margin: 6px 0;
 }
 
-/* --- Hero Featured Movie Section --- */
+.logout-link {
+  color: #f87171 !important;
+}
+
+/* =========================================================================
+   2. Hero / Featured Movie Section
+   ========================================================================= */
 .hero {
   position: relative;
-  min-height: 82vh;
+  min-height: 78vh;
   display: flex;
   align-items: center;
-  padding: 120px 4% 60px;
+  padding: 80px 4% 60px;
   background-image: 
     linear-gradient(to right, rgba(10, 11, 16, 0.98) 0%, rgba(10, 11, 16, 0.75) 45%, rgba(10, 11, 16, 0.2) 80%, rgba(10, 11, 16, 0) 100%),
     linear-gradient(to top, #0a0b10 0%, rgba(10, 11, 16, 0.8) 20%, transparent 60%),
@@ -389,7 +367,7 @@ body {
 .hero-overlay {
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at 20% 40%, rgba(229, 9, 20, 0.07) 0%, transparent 60%);
+  background: radial-gradient(circle at 20% 40%, rgba(229, 9, 20, 0.08) 0%, transparent 60%);
   pointer-events: none;
 }
 
@@ -413,7 +391,6 @@ body {
   letter-spacing: 1.2px;
   color: #fff;
   margin-bottom: 18px;
-  backdrop-filter: blur(8px);
 }
 
 .featured-title {
@@ -437,9 +414,6 @@ body {
 }
 
 .rating-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
   background: var(--rating-bg);
   border: 1px solid rgba(245, 197, 24, 0.3);
   color: var(--rating-gold);
@@ -482,12 +456,12 @@ body {
   gap: 14px;
 }
 
-/* Common Buttons */
+/* Action Buttons */
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: 8px;
   padding: 12px 24px;
   font-size: 0.95rem;
   font-weight: 600;
@@ -497,11 +471,6 @@ body {
   transition: var(--transition-smooth);
   font-family: var(--font-body);
   text-decoration: none;
-}
-
-.btn svg {
-  width: 18px;
-  height: 18px;
 }
 
 .btn-primary {
@@ -528,66 +497,23 @@ body {
   transform: translateY(-2px);
 }
 
-.btn-icon-round {
-  width: 44px;
-  height: 44px;
-  border-radius: var(--radius-full);
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: #fff;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: var(--transition-smooth);
-}
-
-.btn-icon-round:hover {
-  background: rgba(255, 255, 255, 0.25);
-  transform: scale(1.08);
-}
-
-/* --- Main Content & Categories Layout --- */
+/* =========================================================================
+   3. Main Content & Categorized Rows
+   ========================================================================= */
 .main-content {
   position: relative;
   z-index: 2;
-  margin-top: -30px;
+  margin-top: -24px;
   padding: 0 4% 80px;
 }
 
-/* Dynamic Live Search Section */
-.search-results-section {
-  display: none;
-  margin-bottom: 40px;
-  padding-top: 20px;
-}
-
-.search-results-section.active {
-  display: block;
-}
-
-.search-results-header {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  margin-bottom: 20px;
-}
-
-.search-results-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 20px;
-}
-
-/* Category Rows */
 .movie-section {
   margin-bottom: 40px;
-  position: relative;
 }
 
 .section-header {
   display: flex;
-  align-items: center;
+  align-items: baseline;
   justify-content: space-between;
   margin-bottom: 16px;
 }
@@ -596,60 +522,25 @@ body {
   font-size: 1.35rem;
   font-weight: 700;
   letter-spacing: -0.01em;
-  display: flex;
-  align-items: center;
-  gap: 8px;
 }
 
-.section-title .badge-icon {
-  font-size: 1.2rem;
+.section-hint {
+  font-size: 0.8rem;
+  color: var(--text-muted);
 }
 
-.row-controls {
-  display: flex;
-  gap: 8px;
-}
-
-.carousel-arrow {
-  width: 34px;
-  height: 34px;
-  border-radius: var(--radius-full);
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid var(--border-subtle);
-  color: var(--text-primary);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: var(--transition-smooth);
-}
-
-.carousel-arrow:hover {
-  background: var(--primary-red);
-  border-color: var(--primary-red);
-  transform: scale(1.08);
-}
-
-.carousel-arrow svg {
-  width: 16px;
-  height: 16px;
-}
-
-/* Horizontal Movie Row */
+/* Horizontal Movie Row (Pure CSS Flexbox + Overflow-X) */
 .movie-row {
   display: flex;
-  gap: 16px;
+  gap: 18px;
   overflow-x: auto;
   scroll-behavior: smooth;
-  padding: 10px 4px 24px;
-  scrollbar-width: none; /* Firefox */
+  padding: 12px 4px 28px;
 }
 
-.movie-row::-webkit-scrollbar {
-  display: none; /* Chrome, Safari, Opera */
-}
-
-/* --- Movie Card Component --- */
+/* =========================================================================
+   4. Movie Card & Hover Effects (Pure CSS Transitions & Transforms)
+   ========================================================================= */
 .movie-card {
   flex: 0 0 210px;
   position: relative;
@@ -657,7 +548,7 @@ body {
   border-radius: var(--radius-md);
   overflow: hidden;
   cursor: pointer;
-  transition: var(--transition-bounce);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
   box-shadow: var(--shadow-card);
   border: 1px solid var(--border-subtle);
 }
@@ -674,10 +565,22 @@ body {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.5s ease;
+  transition: transform 0.4s ease;
 }
 
-/* Card Hover Play Badge */
+/* Hover Scaling Effect from requirements */
+.movie-card:hover {
+  transform: scale(1.08) translateY(-6px);
+  border-color: var(--border-highlight);
+  box-shadow: var(--shadow-hover);
+  z-index: 10;
+}
+
+.movie-card:hover .movie-poster {
+  transform: scale(1.06);
+}
+
+/* Play Button Hover Overlay */
 .play-overlay {
   position: absolute;
   inset: 0;
@@ -689,7 +592,11 @@ body {
   transition: opacity 0.3s ease;
 }
 
-.play-circle {
+.movie-card:hover .play-overlay {
+  opacity: 1;
+}
+
+.play-btn-circle {
   width: 48px;
   height: 48px;
   border-radius: var(--radius-full);
@@ -698,15 +605,14 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  font-size: 1.2rem;
   box-shadow: 0 4px 15px rgba(229, 9, 20, 0.6);
-  transform: scale(0.8);
-  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transform: scale(0.85);
+  transition: transform 0.3s ease;
 }
 
-.play-circle svg {
-  width: 22px;
-  height: 22px;
-  margin-left: 2px;
+.movie-card:hover .play-btn-circle {
+  transform: scale(1);
 }
 
 /* Card Information Block */
@@ -714,6 +620,10 @@ body {
   padding: 12px;
   background: var(--bg-card);
   transition: background 0.3s ease;
+}
+
+.movie-card:hover .movie-info {
+  background: var(--bg-card-hover);
 }
 
 .movie-title {
@@ -737,90 +647,18 @@ body {
 .card-rating {
   color: var(--rating-gold);
   font-weight: 600;
-  display: inline-flex;
-  align-items: center;
-  gap: 3px;
 }
 
-.card-rating svg {
-  width: 13px;
-  height: 13px;
-  fill: currentColor;
+.card-genre {
+  background: rgba(255, 255, 255, 0.06);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.725rem;
 }
 
-.card-actions-quick {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.quick-btn {
-  background: none;
-  border: 1px solid var(--border-subtle);
-  color: var(--text-secondary);
-  border-radius: var(--radius-full);
-  width: 26px;
-  height: 26px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: var(--transition-smooth);
-}
-
-.quick-btn:hover {
-  background: rgba(255, 255, 255, 0.15);
-  color: #fff;
-  border-color: #fff;
-}
-
-.quick-btn.active {
-  background: var(--primary-red);
-  color: #fff;
-  border-color: var(--primary-red);
-}
-
-.quick-btn svg {
-  width: 12px;
-  height: 12px;
-}
-
-/* --- Card Hover Interactivity --- */
-.movie-card:hover {
-  transform: translateY(-8px) scale(1.05);
-  border-color: var(--border-highlight);
-  box-shadow: var(--shadow-hover);
-  z-index: 10;
-}
-
-.movie-card:hover .movie-poster {
-  transform: scale(1.08);
-}
-
-.movie-card:hover .play-overlay {
-  opacity: 1;
-}
-
-.movie-card:hover .play-circle {
-  transform: scale(1);
-}
-
-.movie-card:hover .movie-info {
-  background: var(--bg-card-hover);
-}
-
-/* Empty State for My List */
-.empty-list-card {
-  padding: 36px 20px;
-  text-align: center;
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px dashed var(--border-subtle);
-  border-radius: var(--radius-md);
-  width: 100%;
-  color: var(--text-muted);
-}
-
-/* --- Movie Detail Modal --- */
+/* =========================================================================
+   5. Pure CSS Modal (Triggered via :target - No JS!)
+   ========================================================================= */
 .modal-overlay {
   position: fixed;
   inset: 0;
@@ -828,18 +666,15 @@ body {
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   z-index: 2000;
-  display: flex;
+  display: none;
   align-items: center;
   justify-content: center;
   padding: 20px;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s ease;
 }
 
-.modal-overlay.open {
-  opacity: 1;
-  pointer-events: auto;
+/* When the URL hash matches the modal ID, display it */
+.modal-overlay:target {
+  display: flex;
 }
 
 .modal-content {
@@ -852,12 +687,6 @@ body {
   overflow-y: auto;
   position: relative;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.9);
-  transform: scale(0.95);
-  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.modal-overlay.open .modal-content {
-  transform: scale(1);
 }
 
 .modal-close-btn {
@@ -873,34 +702,28 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
+  text-decoration: none;
+  font-size: 1.4rem;
   z-index: 10;
   transition: var(--transition-smooth);
 }
 
 .modal-close-btn:hover {
   background: var(--primary-red);
-  transform: rotate(90deg);
 }
 
 .modal-backdrop-hero {
   position: relative;
   width: 100%;
-  height: 340px;
+  height: 320px;
+  background-image: 
+    linear-gradient(0deg, var(--bg-surface) 0%, rgba(18, 19, 28, 0.4) 60%, rgba(18, 19, 28, 0.7) 100%),
+    url('https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=1200&q=80');
   background-size: cover;
-  background-position: center;
-  border-top-left-radius: var(--radius-lg);
-  border-top-right-radius: var(--radius-lg);
+  background-position: center 25%;
   display: flex;
   align-items: flex-end;
   padding: 24px;
-}
-
-.modal-backdrop-hero::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(0deg, var(--bg-surface) 0%, rgba(18, 19, 28, 0.4) 60%, rgba(18, 19, 28, 0.7) 100%);
 }
 
 .modal-hero-details {
@@ -916,17 +739,17 @@ body {
   margin-bottom: 8px;
 }
 
-.modal-body {
-  padding: 24px;
-}
-
 .modal-meta-grid {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 16px;
-  margin-bottom: 18px;
+  gap: 14px;
+  margin-bottom: 12px;
   font-size: 0.9rem;
+}
+
+.modal-body {
+  padding: 24px;
 }
 
 .modal-synopsis {
@@ -948,34 +771,9 @@ body {
   font-weight: 500;
 }
 
-/* --- Toast Notification Banner --- */
-.toast-notification {
-  position: fixed;
-  bottom: 24px;
-  right: 24px;
-  background: var(--bg-surface);
-  border: 1px solid var(--primary-red);
-  color: #fff;
-  padding: 12px 20px;
-  border-radius: var(--radius-md);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.8), 0 0 15px var(--accent-glow);
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  font-size: 0.9rem;
-  font-weight: 500;
-  z-index: 3000;
-  transform: translateY(100px);
-  opacity: 0;
-  transition: var(--transition-smooth);
-}
-
-.toast-notification.show {
-  transform: translateY(0);
-  opacity: 1;
-}
-
-/* --- Footer --- */
+/* =========================================================================
+   6. Footer (Multi-Column Grid)
+   ========================================================================= */
 .site-footer {
   margin-top: auto;
   background-color: #07070a;
@@ -987,17 +785,6 @@ body {
 
 .footer-top {
   margin-bottom: 28px;
-}
-
-.footer-top a {
-  color: var(--text-secondary);
-  text-decoration: none;
-  font-size: 0.95rem;
-  transition: color 0.2s;
-}
-
-.footer-top a:hover {
-  color: var(--primary-red);
 }
 
 .footer-grid {
@@ -1033,11 +820,13 @@ body {
   gap: 16px;
 }
 
-/* --- Responsive Media Queries --- */
+/* =========================================================================
+   7. Responsive Media Queries
+   ========================================================================= */
 @media (max-width: 1024px) {
   .hero {
     min-height: 70vh;
-    padding-top: 100px;
+    padding-top: 70px;
   }
   
   .movie-card {
@@ -1051,21 +840,20 @@ body {
 
 @media (max-width: 768px) {
   .nav-links {
-    display: none; /* Hide primary links on mobile, or toggle via drawer */
+    display: none;
   }
 
-  .search-input {
-    width: 130px;
+  .search-box input {
+    width: 110px;
   }
 
-  .search-input:focus {
-    width: 180px;
+  .search-box input:focus {
+    width: 160px;
   }
 
   .hero {
     min-height: 60vh;
-    padding-top: 85px;
-    background-position: center top;
+    padding-top: 60px;
   }
 
   .featured-title {
