@@ -16,7 +16,7 @@
   <!-- NAV -->
   <nav class="navbar" id="navbar">
     <a href="#" class="logo">CINE<span class="logo-red">VERSE</span></a>
-    <ul class="nav-links">
+    <ul class="nav-links" id="navLinks">
       <li><a href="#" class="active">Home</a></li>
       <li><a href="#trending">Movies</a></li>
       <li><a href="#popular">Popular</a></li>
@@ -27,7 +27,15 @@
         <input type="text" id="searchInput" placeholder="Search movies..." />
         <span class="search-icon">🔍</span>
       </div>
-      <div class="profile-avatar">P</div>
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme" title="Switch Theme">
+        <span id="themeIcon">🌙</span>
+      </button>
+      <div class="profile-avatar" title="Profile">P</div>
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
     </div>
   </nav>
 

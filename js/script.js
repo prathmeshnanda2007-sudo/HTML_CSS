@@ -26,8 +26,64 @@ let currentModalId = null;
 
 // ── Navbar: Add scrolled class ───────────────────────────────────────────────
 window.addEventListener('scroll', () => {
-  document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50);
+  const nav = document.getElementById('navbar');
+  if (nav) nav.classList.toggle('scrolled', window.scrollY > 50);
 }, { passive: true });
+
+// ── Dark / Light Mode Toggle ─────────────────────────────────────────────────
+const themeToggle = document.getElementById('themeToggle');
+const themeIcon   = document.getElementById('themeIcon');
+
+function applyTheme(theme) {
+  if (theme === 'light') {
+    document.body.classList.add('light-mode');
+    if (themeIcon) themeIcon.textContent = '☀️';
+  } else {
+    document.body.classList.remove('light-mode');
+    if (themeIcon) themeIcon.textContent = '🌙';
+  }
+}
+
+// Initial theme check
+const savedTheme = localStorage.getItem('theme') || 'dark';
+applyTheme(savedTheme);
+
+if (themeToggle) {
+  themeToggle.addEventListener('click', () => {
+    const isLight = document.body.classList.toggle('light-mode');
+    const newTheme = isLight ? 'light' : 'dark';
+    if (themeIcon) themeIcon.textContent = isLight ? '☀️' : '🌙';
+    localStorage.setItem('theme', newTheme);
+  });
+}
+
+// ── Mobile Navigation (Hamburger) ────────────────────────────────────────────
+const navToggle = document.getElementById('navToggle');
+const navLinks  = document.getElementById('navLinks');
+
+if (navToggle && navLinks) {
+  navToggle.addEventListener('click', (e) => {
+    e.stopPropagation();
+    navToggle.classList.toggle('open');
+    navLinks.classList.toggle('open');
+  });
+
+  // Close menu when clicking any nav link
+  navLinks.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      navToggle.classList.remove('open');
+      navLinks.classList.remove('open');
+    });
+  });
+
+  // Close menu when clicking outside navbar
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.navbar')) {
+      navToggle.classList.remove('open');
+      navLinks.classList.remove('open');
+    }
+  });
+}
 
 // ── Search ───────────────────────────────────────────────────────────────────
 document.getElementById('searchInput').addEventListener('input', function () {
