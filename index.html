@@ -3,662 +3,304 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="CINEVERSE - Watch movies and series online. Built purely using HTML5 and CSS3.">
-  <title>CINEVERSE - Watch Movies Online | Pure HTML &amp; CSS</title>
-  
-  <!-- Google Fonts: Bebas Neue & Plus Jakarta Sans -->
+  <meta name="description" content="CINEVERSE - Watch movies and series online.">
+  <title>CINEVERSE - Stream Movies Online</title>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
-  
-  <!-- Pure CSS Stylesheet -->
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-  <!-- =========================================================================
-       1. Navigation Bar (Pure CSS Flexbox & Hover Dropdown)
-       ========================================================================= -->
-  <nav class="navbar">
-    <div class="nav-left">
-      <a href="#" class="logo">
-        CINEVERSE <span class="logo-badge">PRO</span>
-      </a>
-      <ul class="nav-links">
-        <li><a href="#" class="active">Home</a></li>
-        <li><a href="#popular">Movies</a></li>
-        <li><a href="#trending">TV Shows</a></li>
-        <li><a href="#action">Genres</a></li>
-        <li><a href="#mylist">My List</a></li>
-      </ul>
-    </div>
-
+  <!-- NAV -->
+  <nav class="navbar" id="navbar">
+    <a href="#" class="logo">CINE<span class="logo-red">VERSE</span></a>
+    <ul class="nav-links">
+      <li><a href="#" class="active">Home</a></li>
+      <li><a href="#trending">Movies</a></li>
+      <li><a href="#popular">Popular</a></li>
+      <li><a href="#mylist">My List</a></li>
+    </ul>
     <div class="nav-right">
-      <!-- Visual Search Box (Pure HTML/CSS) -->
-      <div class="search-box">
-        <input type="text" placeholder="Search movies..." aria-label="Search movies">
-        <button type="button" class="search-btn" aria-label="Search button">🔍</button>
+      <div class="search-wrap">
+        <input type="text" id="searchInput" placeholder="Search movies..." />
+        <span class="search-icon">🔍</span>
       </div>
-
-      <!-- Notification Bell -->
-      <div class="nav-icon-wrapper" title="Notifications">
-        <span class="nav-icon">🔔</span>
-        <span class="badge-count">3</span>
-      </div>
-
-      <!-- Profile Avatar with Pure CSS Hover Dropdown -->
-      <div class="profile-wrapper">
-        <div class="profile-avatar-btn">
-          <div class="profile-avatar">P</div>
-          <span class="dropdown-caret">▼</span>
-        </div>
-
-        <div class="dropdown-menu">
-          <div class="dropdown-header">
-            <p>Signed in as</p>
-            <h4>Prathmesh</h4>
-          </div>
-          <a href="#profile">👤 Account Settings</a>
-          <a href="#mylist">❤️ My Watchlist</a>
-          <a href="#history">⏱️ Watch History</a>
-          <div class="dropdown-divider"></div>
-          <a href="#logout" class="logout-link">🚪 Sign Out</a>
-        </div>
-      </div>
+      <div class="profile-avatar">P</div>
     </div>
   </nav>
 
-  <!-- =========================================================================
-       2. Hero / Featured Movie Section (The Dark Knight)
-       ========================================================================= -->
-  <header class="hero" id="hero">
+  <!-- HERO -->
+  <header class="hero">
     <div class="hero-overlay"></div>
     <div class="hero-content">
-      <div class="featured-badge">
-        <span>★ FEATURED BLOCKBUSTER</span>
-      </div>
-
-      <h1 class="featured-title">THE DARK KNIGHT</h1>
-
-      <div class="meta-info">
+      <span class="badge">★ FEATURED</span>
+      <h1 class="hero-title">THE DARK KNIGHT</h1>
+      <div class="hero-meta">
         <span class="rating-pill">⭐ 9.0</span>
         <span>2008</span>
         <span>2h 32m</span>
-        <span class="quality-badge">4K ULTRA HD</span>
-        <span class="quality-badge">5.1 SURROUND</span>
-        <span class="genre-tags">Action | Crime | Drama</span>
+        <span class="tag">4K</span>
+        <span class="tag">Action | Crime | Drama</span>
       </div>
-
-      <p class="hero-description">
-        When the menace known as the Joker wreaks havoc and chaos on the people of Gotham, Batman must accept one of the greatest psychological and physical tests of his ability to fight injustice.
-      </p>
-
-      <div class="hero-actions">
-        <a href="#modal-dark-knight" class="btn btn-primary">
-          ▶ Play
-        </a>
-        <a href="#mylist" class="btn btn-secondary">
-          + My List
-        </a>
-        <a href="#modal-dark-knight" class="btn btn-secondary">
-          ℹ More Info
-        </a>
+      <p class="hero-desc">When the menace known as the Joker wreaks havoc and chaos on the people of Gotham, Batman must accept one of the greatest psychological and physical tests of his ability to fight injustice.</p>
+      <div class="hero-btns">
+        <button class="btn btn-primary" onclick="openModal('dark-knight')">▶ Play Trailer</button>
+        <button class="btn btn-secondary" onclick="toggleWatchlist(this, 'dark-knight')">+ My List</button>
+        <button class="btn btn-secondary" onclick="openModal('dark-knight')">ℹ More Info</button>
       </div>
     </div>
   </header>
 
-  <!-- =========================================================================
-       3. Movie Categories & Cards (Pure Semantic HTML & CSS Flexbox Rows)
-       ========================================================================= -->
-  <main class="main-content">
+  <!-- SEARCH RESULTS (hidden by default) -->
+  <div class="search-results-bar" id="searchResultsBar" style="display:none;">
+    <div class="search-results-header">
+      <span id="searchResultsText">Showing results for: <strong id="searchQuery"></strong></span>
+      <button class="clear-search" onclick="clearSearch()">✕ Clear</button>
+    </div>
+    <div class="movie-row" id="searchResults"></div>
+  </div>
 
-    <!-- Category 1: Trending Now -->
-    <section class="movie-section" id="trending">
+  <!-- MAIN CONTENT -->
+  <main class="main" id="mainContent">
+
+    <!-- Trending Now -->
+    <section class="section" id="trending">
       <div class="section-header">
         <h2 class="section-title">🔥 Trending Now</h2>
-        <span class="section-hint">Scroll horizontally to explore &rarr;</span>
       </div>
-
       <div class="movie-row">
-        
-        <!-- Movie: Oppenheimer -->
-        <div class="movie-card">
-          <div class="card-poster-wrapper">
-            <img class="movie-poster" src="https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=600&q=80" alt="Oppenheimer">
-            <div class="play-overlay">
-              <span class="play-btn-circle">▶</span>
+
+        <div class="movie-card" data-title="Oppenheimer" data-genre="biography drama">
+          <div class="poster-wrap">
+            <img src="https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=400&q=80" alt="Oppenheimer">
+            <div class="card-overlay">
+              <button class="play-btn" onclick="openModal('oppenheimer')">▶</button>
             </div>
+            <button class="wl-btn" onclick="toggleWatchlist(this,'oppenheimer')" title="Add to My List">+</button>
           </div>
-          <div class="movie-info">
-            <h3 class="movie-title">Oppenheimer</h3>
-            <div class="movie-meta-strip">
-              <span class="card-rating">⭐ 8.9</span>
-              <span class="card-genre">Biography</span>
-            </div>
+          <div class="card-info">
+            <h3>Oppenheimer</h3>
+            <div class="card-meta"><span class="gold">⭐ 8.9</span><span>Biography</span><span>2023</span></div>
           </div>
         </div>
 
-        <!-- Movie: Dune 2 -->
-        <div class="movie-card">
-          <div class="card-poster-wrapper">
-            <img class="movie-poster" src="https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=600&q=80" alt="Dune: Part Two">
-            <div class="play-overlay">
-              <span class="play-btn-circle">▶</span>
+        <div class="movie-card" data-title="Dune Part Two" data-genre="sci-fi adventure">
+          <div class="poster-wrap">
+            <img src="https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=400&q=80" alt="Dune: Part Two">
+            <div class="card-overlay">
+              <button class="play-btn" onclick="openModal('dune2')">▶</button>
             </div>
+            <button class="wl-btn" onclick="toggleWatchlist(this,'dune2')" title="Add to My List">+</button>
           </div>
-          <div class="movie-info">
-            <h3 class="movie-title">Dune: Part Two</h3>
-            <div class="movie-meta-strip">
-              <span class="card-rating">⭐ 8.6</span>
-              <span class="card-genre">Sci-Fi</span>
-            </div>
+          <div class="card-info">
+            <h3>Dune: Part Two</h3>
+            <div class="card-meta"><span class="gold">⭐ 8.6</span><span>Sci-Fi</span><span>2024</span></div>
           </div>
         </div>
 
-        <!-- Movie: Barbie -->
-        <div class="movie-card">
-          <div class="card-poster-wrapper">
-            <img class="movie-poster" src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=600&q=80" alt="Barbie">
-            <div class="play-overlay">
-              <span class="play-btn-circle">▶</span>
+        <div class="movie-card" data-title="Inception" data-genre="action sci-fi thriller">
+          <div class="poster-wrap">
+            <img src="https://images.unsplash.com/photo-1478760329108-5c3ed9d495a0?auto=format&fit=crop&w=400&q=80" alt="Inception">
+            <div class="card-overlay">
+              <button class="play-btn" onclick="openModal('inception')">▶</button>
             </div>
+            <button class="wl-btn" onclick="toggleWatchlist(this,'inception')" title="Add to My List">+</button>
           </div>
-          <div class="movie-info">
-            <h3 class="movie-title">Barbie</h3>
-            <div class="movie-meta-strip">
-              <span class="card-rating">⭐ 7.0</span>
-              <span class="card-genre">Comedy</span>
-            </div>
+          <div class="card-info">
+            <h3>Inception</h3>
+            <div class="card-meta"><span class="gold">⭐ 8.8</span><span>Sci-Fi</span><span>2010</span></div>
           </div>
         </div>
 
-        <!-- Movie: Avatar -->
-        <div class="movie-card">
-          <div class="card-poster-wrapper">
-            <img class="movie-poster" src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=600&q=80" alt="Avatar">
-            <div class="play-overlay">
-              <span class="play-btn-circle">▶</span>
+        <div class="movie-card" data-title="John Wick Chapter 4" data-genre="action crime">
+          <div class="poster-wrap">
+            <img src="https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?auto=format&fit=crop&w=400&q=80" alt="John Wick 4">
+            <div class="card-overlay">
+              <button class="play-btn" onclick="openModal('johnwick4')">▶</button>
             </div>
+            <button class="wl-btn" onclick="toggleWatchlist(this,'johnwick4')" title="Add to My List">+</button>
           </div>
-          <div class="movie-info">
-            <h3 class="movie-title">Avatar</h3>
-            <div class="movie-meta-strip">
-              <span class="card-rating">⭐ 7.9</span>
-              <span class="card-genre">Action</span>
-            </div>
+          <div class="card-info">
+            <h3>John Wick: Chapter 4</h3>
+            <div class="card-meta"><span class="gold">⭐ 8.2</span><span>Action</span><span>2023</span></div>
           </div>
         </div>
 
-        <!-- Movie: Joker -->
-        <div class="movie-card">
-          <div class="card-poster-wrapper">
-            <img class="movie-poster" src="https://images.unsplash.com/photo-1563089145-599997674d42?auto=format&fit=crop&w=600&q=80" alt="Joker">
-            <div class="play-overlay">
-              <span class="play-btn-circle">▶</span>
+        <div class="movie-card" data-title="Gladiator II" data-genre="action adventure drama">
+          <div class="poster-wrap">
+            <img src="https://images.unsplash.com/photo-1533613220915-609f661a6fe1?auto=format&fit=crop&w=400&q=80" alt="Gladiator II">
+            <div class="card-overlay">
+              <button class="play-btn" onclick="openModal('gladiator2')">▶</button>
             </div>
+            <button class="wl-btn" onclick="toggleWatchlist(this,'gladiator2')" title="Add to My List">+</button>
           </div>
-          <div class="movie-info">
-            <h3 class="movie-title">Joker</h3>
-            <div class="movie-meta-strip">
-              <span class="card-rating">⭐ 8.4</span>
-              <span class="card-genre">Crime</span>
+          <div class="card-info">
+            <h3>Gladiator II</h3>
+            <div class="card-meta"><span class="gold">⭐ 8.1</span><span>Action</span><span>2024</span></div>
+          </div>
+        </div>
+
+        <div class="movie-card" data-title="Stranger Things" data-genre="drama fantasy horror">
+          <div class="poster-wrap">
+            <img src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=400&q=80" alt="Stranger Things">
+            <div class="card-overlay">
+              <button class="play-btn" onclick="openModal('strangerthings')">▶</button>
             </div>
+            <button class="wl-btn" onclick="toggleWatchlist(this,'strangerthings')" title="Add to My List">+</button>
+          </div>
+          <div class="card-info">
+            <h3>Stranger Things</h3>
+            <div class="card-meta"><span class="gold">⭐ 8.7</span><span>Drama</span><span>2022</span></div>
           </div>
         </div>
 
       </div>
     </section>
 
-    <!-- Category 2: Popular on CineVerse -->
-    <section class="movie-section" id="popular">
+    <!-- Popular -->
+    <section class="section" id="popular">
       <div class="section-header">
-        <h2 class="section-title">⭐ Popular Movies</h2>
-        <span class="section-hint">Scroll horizontally to explore &rarr;</span>
+        <h2 class="section-title">⭐ Popular on CineVerse</h2>
       </div>
-
       <div class="movie-row">
 
-        <!-- Movie: Inception -->
-        <div class="movie-card">
-          <div class="card-poster-wrapper">
-            <img class="movie-poster" src="https://images.unsplash.com/photo-1478760329108-5c3ed9d495a0?auto=format&fit=crop&w=600&q=80" alt="Inception">
-            <div class="play-overlay">
-              <span class="play-btn-circle">▶</span>
+        <div class="movie-card" data-title="Interstellar" data-genre="sci-fi adventure drama">
+          <div class="poster-wrap">
+            <img src="https://images.unsplash.com/photo-1506703719100-a0f3a48c0f86?auto=format&fit=crop&w=400&q=80" alt="Interstellar">
+            <div class="card-overlay">
+              <button class="play-btn" onclick="openModal('interstellar')">▶</button>
             </div>
+            <button class="wl-btn" onclick="toggleWatchlist(this,'interstellar')" title="Add to My List">+</button>
           </div>
-          <div class="movie-info">
-            <h3 class="movie-title">Inception</h3>
-            <div class="movie-meta-strip">
-              <span class="card-rating">⭐ 8.8</span>
-              <span class="card-genre">Sci-Fi</span>
-            </div>
+          <div class="card-info">
+            <h3>Interstellar</h3>
+            <div class="card-meta"><span class="gold">⭐ 8.7</span><span>Sci-Fi</span><span>2014</span></div>
           </div>
         </div>
 
-        <!-- Movie: Interstellar -->
-        <div class="movie-card">
-          <div class="card-poster-wrapper">
-            <img class="movie-poster" src="https://images.unsplash.com/photo-1506703719100-a0f3a48c0f86?auto=format&fit=crop&w=600&q=80" alt="Interstellar">
-            <div class="play-overlay">
-              <span class="play-btn-circle">▶</span>
+        <div class="movie-card" data-title="Arcane" data-genre="animation action sci-fi">
+          <div class="poster-wrap">
+            <img src="https://images.unsplash.com/photo-1563089145-599997674d42?auto=format&fit=crop&w=400&q=80" alt="Arcane">
+            <div class="card-overlay">
+              <button class="play-btn" onclick="openModal('arcane')">▶</button>
             </div>
+            <button class="wl-btn" onclick="toggleWatchlist(this,'arcane')" title="Add to My List">+</button>
           </div>
-          <div class="movie-info">
-            <h3 class="movie-title">Interstellar</h3>
-            <div class="movie-meta-strip">
-              <span class="card-rating">⭐ 8.7</span>
-              <span class="card-genre">Adventure</span>
-            </div>
+          <div class="card-info">
+            <h3>Arcane</h3>
+            <div class="card-meta"><span class="gold">⭐ 9.0</span><span>Animation</span><span>2021</span></div>
           </div>
         </div>
 
-        <!-- Movie: Batman -->
-        <div class="movie-card">
-          <div class="card-poster-wrapper">
-            <img class="movie-poster" src="https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=600&q=80" alt="The Dark Knight">
-            <div class="play-overlay">
-              <span class="play-btn-circle">▶</span>
+        <div class="movie-card" data-title="Spider-Man Across the Spider-Verse" data-genre="animation action adventure">
+          <div class="poster-wrap">
+            <img src="https://images.unsplash.com/photo-1635805737707-575885ab0820?auto=format&fit=crop&w=400&q=80" alt="Spider-Verse">
+            <div class="card-overlay">
+              <button class="play-btn" onclick="openModal('spiderverse')">▶</button>
             </div>
+            <button class="wl-btn" onclick="toggleWatchlist(this,'spiderverse')" title="Add to My List">+</button>
           </div>
-          <div class="movie-info">
-            <h3 class="movie-title">The Dark Knight</h3>
-            <div class="movie-meta-strip">
-              <span class="card-rating">⭐ 9.0</span>
-              <span class="card-genre">Action</span>
-            </div>
+          <div class="card-info">
+            <h3>Spider-Man: Across the Spider-Verse</h3>
+            <div class="card-meta"><span class="gold">⭐ 8.7</span><span>Animation</span><span>2023</span></div>
           </div>
         </div>
 
-        <!-- Movie: Matrix -->
-        <div class="movie-card">
-          <div class="card-poster-wrapper">
-            <img class="movie-poster" src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=600&q=80" alt="The Matrix">
-            <div class="play-overlay">
-              <span class="play-btn-circle">▶</span>
+        <div class="movie-card" data-title="Pulp Fiction" data-genre="crime drama">
+          <div class="poster-wrap">
+            <img src="https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=400&q=80" alt="Pulp Fiction">
+            <div class="card-overlay">
+              <button class="play-btn" onclick="openModal('pulpfiction')">▶</button>
             </div>
+            <button class="wl-btn" onclick="toggleWatchlist(this,'pulpfiction')" title="Add to My List">+</button>
           </div>
-          <div class="movie-info">
-            <h3 class="movie-title">The Matrix</h3>
-            <div class="movie-meta-strip">
-              <span class="card-rating">⭐ 8.7</span>
-              <span class="card-genre">Sci-Fi</span>
-            </div>
+          <div class="card-info">
+            <h3>Pulp Fiction</h3>
+            <div class="card-meta"><span class="gold">⭐ 8.9</span><span>Crime</span><span>1994</span></div>
           </div>
         </div>
 
-        <!-- Movie: Titanic -->
-        <div class="movie-card">
-          <div class="card-poster-wrapper">
-            <img class="movie-poster" src="https://images.unsplash.com/photo-1508873696983-2df5703bc20d?auto=format&fit=crop&w=600&q=80" alt="Titanic">
-            <div class="play-overlay">
-              <span class="play-btn-circle">▶</span>
+        <div class="movie-card" data-title="Cyberpunk Edgerunners" data-genre="animation action sci-fi">
+          <div class="poster-wrap">
+            <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=400&q=80" alt="Cyberpunk Edgerunners">
+            <div class="card-overlay">
+              <button class="play-btn" onclick="openModal('edgerunners')">▶</button>
             </div>
+            <button class="wl-btn" onclick="toggleWatchlist(this,'edgerunners')" title="Add to My List">+</button>
           </div>
-          <div class="movie-info">
-            <h3 class="movie-title">Titanic</h3>
-            <div class="movie-meta-strip">
-              <span class="card-rating">⭐ 7.9</span>
-              <span class="card-genre">Romance</span>
+          <div class="card-info">
+            <h3>Cyberpunk: Edgerunners</h3>
+            <div class="card-meta"><span class="gold">⭐ 8.3</span><span>Anime</span><span>2022</span></div>
+          </div>
+        </div>
+
+        <div class="movie-card" data-title="The Godfather" data-genre="crime drama">
+          <div class="poster-wrap">
+            <img src="https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=400&q=80" alt="The Godfather">
+            <div class="card-overlay">
+              <button class="play-btn" onclick="openModal('godfather')">▶</button>
             </div>
+            <button class="wl-btn" onclick="toggleWatchlist(this,'godfather')" title="Add to My List">+</button>
+          </div>
+          <div class="card-info">
+            <h3>The Godfather</h3>
+            <div class="card-meta"><span class="gold">⭐ 9.2</span><span>Crime</span><span>1972</span></div>
           </div>
         </div>
 
       </div>
     </section>
 
-    <!-- Category 3: Action Movies -->
-    <section class="movie-section" id="action">
-      <div class="section-header">
-        <h2 class="section-title">💥 Action</h2>
-        <span class="section-hint">Scroll horizontally to explore &rarr;</span>
-      </div>
-
-      <div class="movie-row">
-
-        <!-- Movie: John Wick -->
-        <div class="movie-card">
-          <div class="card-poster-wrapper">
-            <img class="movie-poster" src="https://images.unsplash.com/photo-1533613220915-609f661a6fe1?auto=format&fit=crop&w=600&q=80" alt="John Wick">
-            <div class="play-overlay">
-              <span class="play-btn-circle">▶</span>
-            </div>
-          </div>
-          <div class="movie-info">
-            <h3 class="movie-title">John Wick</h3>
-            <div class="movie-meta-strip">
-              <span class="card-rating">⭐ 7.7</span>
-              <span class="card-genre">Action</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Movie: Avengers -->
-        <div class="movie-card">
-          <div class="card-poster-wrapper">
-            <img class="movie-poster" src="https://images.unsplash.com/photo-1635805737707-575885ab0820?auto=format&fit=crop&w=600&q=80" alt="Avengers">
-            <div class="play-overlay">
-              <span class="play-btn-circle">▶</span>
-            </div>
-          </div>
-          <div class="movie-info">
-            <h3 class="movie-title">Avengers</h3>
-            <div class="movie-meta-strip">
-              <span class="card-rating">⭐ 8.4</span>
-              <span class="card-genre">Action</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Movie: Extraction -->
-        <div class="movie-card">
-          <div class="card-poster-wrapper">
-            <img class="movie-poster" src="https://images.unsplash.com/photo-1511447333015-45b65e60f6d5?auto=format&fit=crop&w=600&q=80" alt="Extraction">
-            <div class="play-overlay">
-              <span class="play-btn-circle">▶</span>
-            </div>
-          </div>
-          <div class="movie-info">
-            <h3 class="movie-title">Extraction</h3>
-            <div class="movie-meta-strip">
-              <span class="card-rating">⭐ 7.1</span>
-              <span class="card-genre">Action</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Movie: Top Gun -->
-        <div class="movie-card">
-          <div class="card-poster-wrapper">
-            <img class="movie-poster" src="https://images.unsplash.com/photo-1519074069444-1ba4ea16e6f4?auto=format&fit=crop&w=600&q=80" alt="Top Gun">
-            <div class="play-overlay">
-              <span class="play-btn-circle">▶</span>
-            </div>
-          </div>
-          <div class="movie-info">
-            <h3 class="movie-title">Top Gun</h3>
-            <div class="movie-meta-strip">
-              <span class="card-rating">⭐ 8.3</span>
-              <span class="card-genre">Action</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Movie: Mad Max -->
-        <div class="movie-card">
-          <div class="card-poster-wrapper">
-            <img class="movie-poster" src="https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=600&q=80" alt="Mad Max">
-            <div class="play-overlay">
-              <span class="play-btn-circle">▶</span>
-            </div>
-          </div>
-          <div class="movie-info">
-            <h3 class="movie-title">Mad Max</h3>
-            <div class="movie-meta-strip">
-              <span class="card-rating">⭐ 8.1</span>
-              <span class="card-genre">Action</span>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </section>
-
-    <!-- Category 4: Comedy Movies -->
-    <section class="movie-section" id="comedy">
-      <div class="section-header">
-        <h2 class="section-title">😂 Comedy</h2>
-        <span class="section-hint">Scroll horizontally to explore &rarr;</span>
-      </div>
-
-      <div class="movie-row">
-
-        <!-- Movie: Hangover -->
-        <div class="movie-card">
-          <div class="card-poster-wrapper">
-            <img class="movie-poster" src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=600&q=80" alt="The Hangover">
-            <div class="play-overlay">
-              <span class="play-btn-circle">▶</span>
-            </div>
-          </div>
-          <div class="movie-info">
-            <h3 class="movie-title">The Hangover</h3>
-            <div class="movie-meta-strip">
-              <span class="card-rating">⭐ 7.7</span>
-              <span class="card-genre">Comedy</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Movie: Superbad -->
-        <div class="movie-card">
-          <div class="card-poster-wrapper">
-            <img class="movie-poster" src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=600&q=80" alt="Superbad">
-            <div class="play-overlay">
-              <span class="play-btn-circle">▶</span>
-            </div>
-          </div>
-          <div class="movie-info">
-            <h3 class="movie-title">Superbad</h3>
-            <div class="movie-meta-strip">
-              <span class="card-rating">⭐ 7.6</span>
-              <span class="card-genre">Comedy</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Movie: Free Guy -->
-        <div class="movie-card">
-          <div class="card-poster-wrapper">
-            <img class="movie-poster" src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=600&q=80" alt="Free Guy">
-            <div class="play-overlay">
-              <span class="play-btn-circle">▶</span>
-            </div>
-          </div>
-          <div class="movie-info">
-            <h3 class="movie-title">Free Guy</h3>
-            <div class="movie-meta-strip">
-              <span class="card-rating">⭐ 7.1</span>
-              <span class="card-genre">Comedy</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Movie: Deadpool -->
-        <div class="movie-card">
-          <div class="card-poster-wrapper">
-            <img class="movie-poster" src="https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?auto=format&fit=crop&w=600&q=80" alt="Deadpool">
-            <div class="play-overlay">
-              <span class="play-btn-circle">▶</span>
-            </div>
-          </div>
-          <div class="movie-info">
-            <h3 class="movie-title">Deadpool</h3>
-            <div class="movie-meta-strip">
-              <span class="card-rating">⭐ 8.0</span>
-              <span class="card-genre">Comedy</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Movie: Jumanji -->
-        <div class="movie-card">
-          <div class="card-poster-wrapper">
-            <img class="movie-poster" src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=600&q=80" alt="Jumanji">
-            <div class="play-overlay">
-              <span class="play-btn-circle">▶</span>
-            </div>
-          </div>
-          <div class="movie-info">
-            <h3 class="movie-title">Jumanji</h3>
-            <div class="movie-meta-strip">
-              <span class="card-rating">⭐ 7.0</span>
-              <span class="card-genre">Adventure</span>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </section>
-
-    <!-- Category 5: My List -->
-    <section class="movie-section" id="mylist">
+    <!-- My List -->
+    <section class="section" id="mylist">
       <div class="section-header">
         <h2 class="section-title">❤️ My List</h2>
-        <span class="section-hint">4 movies saved</span>
+        <span class="section-hint" id="mylistCount">0 saved</span>
       </div>
-
-      <div class="movie-row">
-
-        <!-- Movie: Interstellar -->
-        <div class="movie-card">
-          <div class="card-poster-wrapper">
-            <img class="movie-poster" src="https://images.unsplash.com/photo-1506703719100-a0f3a48c0f86?auto=format&fit=crop&w=600&q=80" alt="Interstellar">
-            <div class="play-overlay">
-              <span class="play-btn-circle">▶</span>
-            </div>
-          </div>
-          <div class="movie-info">
-            <h3 class="movie-title">Interstellar</h3>
-            <div class="movie-meta-strip">
-              <span class="card-rating">⭐ 8.7</span>
-              <span class="card-genre">Sci-Fi</span>
-            </div>
-          </div>
+      <div class="movie-row" id="mylistRow">
+        <div class="empty-list">
+          <div>🎬</div>
+          <p>Your list is empty. Click <strong>+</strong> on any movie to save it here.</p>
         </div>
-
-        <!-- Movie: Inception -->
-        <div class="movie-card">
-          <div class="card-poster-wrapper">
-            <img class="movie-poster" src="https://images.unsplash.com/photo-1478760329108-5c3ed9d495a0?auto=format&fit=crop&w=600&q=80" alt="Inception">
-            <div class="play-overlay">
-              <span class="play-btn-circle">▶</span>
-            </div>
-          </div>
-          <div class="movie-info">
-            <h3 class="movie-title">Inception</h3>
-            <div class="movie-meta-strip">
-              <span class="card-rating">⭐ 8.8</span>
-              <span class="card-genre">Action</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Movie: Batman -->
-        <div class="movie-card">
-          <div class="card-poster-wrapper">
-            <img class="movie-poster" src="https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=600&q=80" alt="The Dark Knight">
-            <div class="play-overlay">
-              <span class="play-btn-circle">▶</span>
-            </div>
-          </div>
-          <div class="movie-info">
-            <h3 class="movie-title">The Dark Knight</h3>
-            <div class="movie-meta-strip">
-              <span class="card-rating">⭐ 9.0</span>
-              <span class="card-genre">Action</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Movie: Dune -->
-        <div class="movie-card">
-          <div class="card-poster-wrapper">
-            <img class="movie-poster" src="https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=600&q=80" alt="Dune: Part Two">
-            <div class="play-overlay">
-              <span class="play-btn-circle">▶</span>
-            </div>
-          </div>
-          <div class="movie-info">
-            <h3 class="movie-title">Dune: Part Two</h3>
-            <div class="movie-meta-strip">
-              <span class="card-rating">⭐ 8.6</span>
-              <span class="card-genre">Sci-Fi</span>
-            </div>
-          </div>
-        </div>
-
       </div>
     </section>
 
   </main>
 
-  <!-- =========================================================================
-       4. Pure CSS Modal (Opens on :target, closes on click - No JS needed!)
-       ========================================================================= -->
-  <div class="modal-overlay" id="modal-dark-knight">
-    <div class="modal-content">
-      <a href="#" class="modal-close-btn" title="Close modal">&times;</a>
-      
-      <div class="modal-backdrop-hero">
-        <div class="modal-hero-details">
-          <h2 class="modal-title">THE DARK KNIGHT</h2>
-          <div class="modal-meta-grid">
-            <span class="rating-pill">⭐ 9.0</span>
-            <span>2008</span>
-            <span>2h 32m</span>
-            <span class="quality-badge">4K ULTRA HD</span>
-            <span class="quality-badge">5.1 SURROUND</span>
-            <span class="genre-tags">Action | Crime | Drama</span>
-          </div>
-          <div class="hero-actions" style="margin-top: 16px;">
-            <a href="#" class="btn btn-primary">▶ Watch Trailer</a>
-            <a href="#" class="btn btn-secondary">✓ In My List</a>
-          </div>
-        </div>
+  <!-- MODAL -->
+  <div class="modal-overlay" id="modal" onclick="closeModal(event)">
+    <div class="modal-box">
+      <button class="modal-close" onclick="closeModal()">✕</button>
+      <div class="modal-poster">
+        <img id="modal-img" src="" alt="">
+        <div class="modal-poster-overlay"></div>
       </div>
-
       <div class="modal-body">
-        <h3 style="font-size: 1.1rem; margin-bottom: 8px;">Storyline</h3>
-        <p class="modal-synopsis">
-          When the menace known as the Joker wreaks havoc and chaos on the people of Gotham, Batman must accept one of the greatest psychological and physical tests of his ability to fight injustice.
-        </p>
-        <div class="modal-cast">
-          Starring: <span>Christian Bale, Heath Ledger, Aaron Eckhart, Michael Caine</span>
+        <h2 id="modal-title"></h2>
+        <div class="modal-meta" id="modal-meta"></div>
+        <p id="modal-desc"></p>
+        <div class="modal-cast" id="modal-cast"></div>
+        <div class="modal-actions">
+          <button class="btn btn-primary">▶ Watch Trailer</button>
+          <button class="btn btn-secondary" id="modal-wl-btn">+ My List</button>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- =========================================================================
-       5. Site Footer
-       ========================================================================= -->
-  <footer class="site-footer">
-    <div class="footer-top">
-      <p>Questions? Contact us or call 1-800-000-0000</p>
-    </div>
-
-    <div class="footer-grid">
-      <div class="footer-col">
-        <a href="#faq">FAQ</a>
-        <a href="#help">Help Center</a>
-        <a href="#privacy">Privacy</a>
-        <a href="#terms">Terms</a>
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <p class="footer-logo">CINE<span class="logo-red">VERSE</span></p>
+      <div class="footer-links">
+        <a href="#">FAQ</a><a href="#">Help</a><a href="#">Privacy</a><a href="#">Terms</a><a href="#">Contact</a>
       </div>
-      <div class="footer-col">
-        <a href="#account">Account</a>
-        <a href="#media">Media Center</a>
-        <a href="#ways">Ways to Watch</a>
-        <a href="#speed">Speed Test</a>
-      </div>
-      <div class="footer-col">
-        <a href="#investor">Investor Relations</a>
-        <a href="#jobs">Jobs</a>
-        <a href="#cookies">Cookie Preferences</a>
-        <a href="#legal">Legal Notices</a>
-      </div>
-      <div class="footer-col">
-        <a href="#contact">Contact Us</a>
-        <a href="#corporate">Corporate Info</a>
-        <a href="#only">Only on CineVerse</a>
-        <a href="#audio">Audio Description</a>
-      </div>
-    </div>
-
-    <div class="footer-bottom">
-      <p>&copy; 2026 CINEVERSE Inc. All rights reserved.</p>
-      <p style="color: var(--text-muted); font-size: 0.8rem;">100% Pure HTML5 &amp; CSS3 • Zero JavaScript</p>
+      <p class="footer-copy">&copy; 2026 CINEVERSE Inc. All rights reserved.</p>
     </div>
   </footer>
 
+  <script src="js/script.js"></script>
 </body>
 </html>
